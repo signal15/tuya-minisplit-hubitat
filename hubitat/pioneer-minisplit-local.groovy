@@ -41,7 +41,7 @@ metadata {
 preferences {
     section("Device Configuration") {
         input "ipaddress", "text", title: "Device IP:", required: true,
-              description: "Pioneer mini-split IP address (e.g., 10.129.1.97)"
+              description: "Pioneer mini-split IP address (e.g., 192.168.1.100)"
         input "devId", "text", title: "Device ID:", required: true,
               description: "Tuya device ID (from discovery)"
         input "localKey", "text", title: "Local Key:", required: true,
