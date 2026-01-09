@@ -2,20 +2,29 @@
 .env
 *.local
 
-# Python
+# Claude Code project context (not needed in repo)
+CLAUDE.md
+
+# Python development tools (not needed for Hubitat driver)
+discovery/
+service/
+scripts/
+venv/
+.venv/
+ENV/
+env/
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
 .Python
-venv/
-.venv/
-ENV/
-env/
 .eggs/
 *.egg-info/
 dist/
 build/
+requirements.txt
+tinytuya.json
+snapshot.json
 
 # IDE
 .idea/

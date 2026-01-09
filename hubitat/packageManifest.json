@@ -1,19 +1,19 @@
 {
-  "packageName": "Pioneer Mini-Split",
+  "packageName": "Pioneer Mini-Split Local",
   "author": "signal15",
   "version": "1.0.0",
   "minimumHEVersion": "2.3.0",
   "licenseFile": "https://raw.githubusercontent.com/signal15/tuya-minisplit-hubitat/main/LICENSE",
   "documentationLink": "https://github.com/signal15/tuya-minisplit-hubitat#readme",
   "communityLink": "https://github.com/signal15/tuya-minisplit-hubitat/issues",
-  "releaseNotes": "Initial release - Local control of Pioneer WYT mini-splits via Tuya protocol",
+  "releaseNotes": "Native local control of Pioneer WYT mini-splits via Tuya protocol. No bridge required.",
   "dateReleased": "2025-01-08",
   "drivers": [
     {
-      "id": "pioneer-minisplit-driver",
-      "name": "Pioneer Mini-Split",
+      "id": "a8d7f3e2-1b4c-5d6e-9f0a-2b3c4d5e6f7a",
+      "name": "Pioneer Mini-Split Local",
       "namespace": "signal15",
-      "location": "https://raw.githubusercontent.com/signal15/tuya-minisplit-hubitat/main/hubitat/pioneer-minisplit-driver.groovy",
+      "location": "https://raw.githubusercontent.com/signal15/tuya-minisplit-hubitat/main/hubitat/pioneer-minisplit-local.groovy",
       "required": true,
       "version": "1.0.0"
     }
