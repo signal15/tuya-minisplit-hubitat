@@ -11,11 +11,31 @@ Native local control of Pioneer WYT (Diamante) mini-split heat pumps via Hubitat
 
 ## Supported Devices
 
-- Pioneer WYT (Diamante) series mini-splits with TST-DIAWIFITPD WiFi module
+### Confirmed Working
+- **Pioneer WYT (Diamante)** series mini-splits with TST-DIAWIFITPD WiFi module
+
+### May Also Work (Same Tuya Protocol)
+These brands use similar Tuya-based WiFi modules and may work with this driver (DPID mappings might vary):
+
+- **Cooper & Hunter** - Sophia, MIA, Olivia, Dakota, Hyper Heat series (with WiFi adapter)
+- **Confortotal** - CICON series
+- **Royal Sovereign** - RSAI series
+- **Kaisai** - Pro Heat+ series
+- **Rotenso** - Roni series
+- **Tesla Smart** - TAF/AUX series
+- **Be Cool** - BC series
+
+If your mini-split uses the **Tuya Smart** or **Smart Life** app and connects via WiFi (not IR blaster), it likely uses this protocol.
+
+### NOT Supported
+- **Pioneer WYS** models (use Midea protocol, not Tuya)
+- IR blaster-controlled units
+- Cloud-only devices without local API
+
+### Technical Details
 - Uses Tuya Tywe1s (ESP8266) chip
 - Protocol: Tuya 3.3/3.4 over TCP port 6668
-
-**Note**: This does NOT support WYS models (which use Midea protocol).
+- Requires 2.4 GHz WiFi (5 GHz not supported)
 
 ## Installation
 
