@@ -1,0 +1,201 @@
+# Pioneer WYT Mini-Split DPID Configuration
+# Based on tuya-local starlight_heatpump.yaml and community research
+
+device:
+  name: "Pioneer WYT Mini-Split"
+  protocol_version: "3.3"
+
+# Core controls
+datapoints:
+  power:
+    dp: 1
+    type: bool
+    description: "Power on/off"
+
+  target_temp:
+    dp: 2
+    type: int
+    scale: 10
+    unit: F
+    min: 61
+    max: 86
+    description: "Target temperature (value * 10, e.g., 720 = 72F)"
+
+  current_temp:
+    dp: 3
+    type: int
+    unit: C
+    readonly: true
+    description: "Current temperature in Celsius"
+
+  mode:
+    dp: 4
+    type: enum
+    values:
+      - cold
+      - hot
+      - wet
+      - wind
+      - auto
+    description: "Operating mode"
+
+  fan:
+    dp: 5
+    type: enum
+    values:
+      - auto
+      - quiet
+      - low
+      - medium-low
+      - medium
+      - medium-high
+      - high
+      - strong
+    description: "Fan speed"
+
+  # Sensors
+  humidity:
+    dp: 18
+    type: int
+    readonly: true
+    description: "Current humidity percentage"
+
+  fault_code:
+    dp: 20
+    type: bitfield
+    readonly: true
+    description: "Fault/error code bitfield"
+
+  # Comfort features
+  sleep_mode:
+    dp: 105
+    type: enum
+    values:
+      - "off"
+      - standard
+      - elderly
+      - child
+    description: "Sleep mode setting"
+
+  vert_swing:
+    dp: 113
+    type: enum
+    values:
+      - "off"
+      - full
+      - upper
+      - lower
+    description: "Vertical swing/louver position"
+
+  horiz_swing:
+    dp: 114
+    type: enum
+    values:
+      - "off"
+      - full
+      - left
+      - center
+      - right
+    description: "Horizontal swing/louver position"
+
+  eco_mode:
+    dp: 119
+    type: string
+    description: "Eco mode setting"
+
+  generator_mode:
+    dp: 120
+    type: string
+    description: "Generator mode (for off-grid use)"
+
+  # Display and beep controls (hex bitfield)
+  display_beep:
+    dp: 123
+    type: hex_bitfield
+    bits:
+      eco: 0x0001
+      display: 0x0008
+      buzzer: 0x0010
+      health: 0x0020
+      anti_mildew: 0x0100
+      anti_frost: 0x1000
+      soft_wind: 0x8000
+    description: "Display, beep, and feature toggles"
+
+  vert_position:
+    dp: 126
+    type: int
+    min: 1
+    max: 5
+    description: "Fixed vertical louver position (1-5)"
+
+  horiz_position:
+    dp: 127
+    type: int
+    min: 1
+    max: 5
+    description: "Fixed horizontal louver position (1-5)"
+
+  eco_temp:
+    dp: 130
+    type: int
+    description: "Eco mode temperature setting"
+
+  filter_dirty:
+    dp: 131
+    type: bool
+    readonly: true
+    description: "Filter needs cleaning indicator"
+
+  heat_cool:
+    dp: 132
+    type: bool
+    readonly: true
+    description: "Currently heating (true) or cooling (false)"
+
+  swing_action:
+    dp: 133
+    type: int
+    min: 0
+    max: 3
+    description: "Combined swing action mode"
+
+  stats:
+    dp: 134
+    type: json
+    readonly: true
+    description: "Runtime statistics (JSON)"
+
+# Mode mappings for Hubitat thermostat capability
+mode_map:
+  hubitat_to_tuya:
+    cool: cold
+    heat: hot
+    auto: auto
+    "off": "off"
+    fan_only: wind
+    dry: wet
+  tuya_to_hubitat:
+    cold: cool
+    hot: heat
+    auto: auto
+    wind: fan_only
+    wet: dry
+
+# Fan mappings for Hubitat
+fan_map:
+  hubitat_to_tuya:
+    auto: auto
+    low: low
+    medium: medium
+    high: high
+    "on": medium
+  tuya_to_hubitat:
+    auto: auto
+    quiet: low
+    low: low
+    medium-low: medium
+    medium: medium
+    medium-high: medium
+    high: high
+    strong: high
