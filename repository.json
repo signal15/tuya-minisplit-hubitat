@@ -1,0 +1,12 @@
+{
+  "author": "signal15",
+  "gitHubUrl": "https://github.com/signal15/tuya-minisplit-hubitat",
+  "packages": [
+    {
+      "name": "Pioneer Mini-Split Local",
+      "category": "Climate Control",
+      "location": "https://raw.githubusercontent.com/signal15/tuya-minisplit-hubitat/main/hubitat/packageManifest.json",
+      "description": "Native local control of Pioneer WYT (Diamante) mini-splits via Tuya protocol. No bridge required."
+    }
+  ]
+}
