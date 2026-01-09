@@ -31,6 +31,7 @@ metadata {
         command "Disconnect"
         command "dry"
         command "fanOnly"
+        command "debugKey"
 
         attribute "filterStatus", "string"
         attribute "rawDps", "string"
@@ -446,7 +447,39 @@ Short getNewMessageSequence() {
 }
 
 byte[] getRealLocalKey() {
-    return localKey.replaceAll('&lt;', '<').getBytes("UTF-8")
+    // Decode common HTML entities that Hubitat may introduce
+    String key = localKey
+    key = key.replaceAll('&lt;', '<')
+    key = key.replaceAll('&gt;', '>')
+    key = key.replaceAll('&amp;', '&')
+    key = key.replaceAll('&quot;', '"')
+    key = key.replaceAll('&#39;', "'")
+    key = key.replaceAll('&#96;', '`')
+    key = key.replaceAll('&#x60;', '`')
+    key = key.replaceAll('&#61;', '=')
+    key = key.replaceAll('&#63;', '?')
+    key = key.replaceAll('&#58;', ':')
+    key = key.replaceAll('&#93;', ']')
+    key = key.replaceAll('&#91;', '[')
+
+    if (logEnable) log.debug "LocalKey length: ${key.length()}, expected: 16"
+
+    return key.getBytes("UTF-8")
+}
+
+def debugKey() {
+    log.info "=== KEY DEBUG INFO ==="
+    log.info "Raw localKey from preferences: '${localKey}'"
+    log.info "Raw localKey length: ${localKey?.length()}"
+    byte[] decoded = getRealLocalKey()
+    log.info "Decoded key length: ${decoded.length}"
+    log.info "Decoded key as string: '${new String(decoded, 'UTF-8')}'"
+    log.info "Key bytes (hex): ${hubitat.helper.HexUtils.byteArrayToHexString(decoded)}"
+    log.info "Expected length: 16 bytes"
+    if (decoded.length != 16) {
+        log.error "KEY LENGTH MISMATCH! Got ${decoded.length}, expected 16"
+    }
+    log.info "======================"
 }
 
 def _updatedTuya() {
