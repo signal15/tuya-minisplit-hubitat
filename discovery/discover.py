@@ -18,22 +18,37 @@ except ImportError:
     sys.exit(1)
 
 
-def discover_devices(timeout: int = 10) -> list:
+def discover_devices(retries: int = 5) -> list:
     """
     Scan for Tuya devices on the local network.
 
     Args:
-        timeout: Scan timeout in seconds
+        retries: Number of scan iterations
 
     Returns:
         List of discovered device dictionaries
     """
-    print(f"Scanning for Tuya devices (timeout: {timeout}s)...")
+    print(f"Scanning for Tuya devices (retries: {retries})...")
     print("Listening on UDP ports 6666 and 6667...\n")
 
-    devices = tinytuya.deviceScan(verbose=False, maxretry=3, timeout=timeout)
+    devices = tinytuya.deviceScan(verbose=True, maxretry=retries, poll=False, forcescan=False)
 
-    return list(devices.values()) if devices else []
+    if not devices:
+        return []
+
+    # Convert from dict keyed by IP to list of devices
+    result = []
+    for ip, device_data in devices.items():
+        device = {
+            'ip': ip,
+            'id': device_data.get('gwId', device_data.get('id')),
+            'version': device_data.get('version', '3.3'),
+            'productKey': device_data.get('productKey', ''),
+            'name': device_data.get('name', ''),
+        }
+        result.append(device)
+
+    return result
 
 
 def format_device(device: dict) -> str:
@@ -71,10 +86,10 @@ def main():
         description="Discover Pioneer WYT (Tuya) devices on the local network"
     )
     parser.add_argument(
-        "-t", "--timeout",
+        "-r", "--retries",
         type=int,
-        default=10,
-        help="Scan timeout in seconds (default: 10)"
+        default=5,
+        help="Number of scan iterations (default: 5)"
     )
     parser.add_argument(
         "-o", "--output",
@@ -89,7 +104,7 @@ def main():
 
     args = parser.parse_args()
 
-    devices = discover_devices(timeout=args.timeout)
+    devices = discover_devices(retries=args.retries)
 
     if not devices:
         print("No Tuya devices found on the network.")
@@ -97,7 +112,7 @@ def main():
         print("  - Ensure your device is powered on and connected to WiFi")
         print("  - Check that you're on the same network/VLAN as the device")
         print("  - UDP ports 6666/6667 must not be blocked")
-        print("  - Try increasing timeout: python discover.py -t 30")
+        print("  - Try increasing retries: python discover.py -r 10")
         print("\nFallback: scan for TCP port 6668:")
         print("  nmap -p 6668 --open 10.129.1.0/24")
         sys.exit(1)
